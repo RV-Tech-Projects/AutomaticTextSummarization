@@ -1,0 +1,8 @@
+Design Methodology: Text Summarizer News or Technology Articles
+
+Data Flow Diagram(DFD - level 0) : Architectural diagram- LSTM block diagram
+Data Flow Diagram(DFD - level 1) - TextRank Algorithm block diagram
+// both the above block diagrams are available here:
+// https://github.com/RV-Tech-Projects/AutomaticTextSummarizer_Diagrams/tree/master/Screenshots
+
+
