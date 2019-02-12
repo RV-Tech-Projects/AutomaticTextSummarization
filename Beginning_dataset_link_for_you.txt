@@ -1,0 +1,6 @@
+To get the data set for word embeddings, visit:
+
+https://nlp.stanford.edu/data/glove.6B.zip
+
+It is a 822 MB zip file for downloading which after extracting,
+    will turn to more than 2 GB file.
