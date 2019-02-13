@@ -1,4 +1,4 @@
-Design Methodology: Text Summarizer News or Technology Articles
+Design Methodology: Text Summarizer News Articles using LSTM
 
 Data Flow Diagram(DFD - level 0) : Architectural diagram- LSTM block diagram
 Data Flow Diagram(DFD - level 1) - TextRank Algorithm block diagram
