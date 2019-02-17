@@ -1,0 +1,34 @@
+NLTK: The Natural Language Toolkit, or more commonly NLTK, is a suite of libraries and programs for symbolic
+        and statistical natural language processing for English written in the Python programming language.
+
+Forming of Word Embeddings:
+	GloVe is an unsupervised learning algorithm for obtaining vector representations for words.
+	Training is performed on aggregated global word-word co-occurrence statistics from a corpus,
+	and the resulting representations showcase interesting linear substructures of the word vector space.
+
+	Algorithms used to create word embeddings:
+		Nearest neighbors: The Euclidean distance (or cosine similarity) between two word vectors provides an effective
+		            method for measuring the linguistic or semantic similarity of the corresponding words.
+		            Sometimes, the nearest neighbors according to this metric reveal rare but relevant words
+		            that lie outside an average human's vocabulary.
+					eg. frog and toad will lie near to each other and hence, will be similar.
+		Linear substructures: The similarity metrics used for nearest neighbor evaluations produce a
+		            single scalar that quantifies the relatedness of two words. This simplicity can be
+		            problematic since two given words almost always exhibit more intricate relationships
+		            than can be captured by a single number. For example, man may be regarded as
+		            similar to woman in that both words describe human beings; on the other hand,
+		            the two words are often considered opposites since they highlight a primary axis 					along which humans differ from one another. In order to capture in a quantitative way the nuance necessary to distinguish man from woman, it is necessary for a 				model to associate more than a single number to the word pair. A natural and simple candidate for an enlarged set of discriminative numbers is the vector 						difference between the two word vectors. GloVe is designed in order that such vector differences capture as much as possible the meaning specified by the 						juxtaposition of two words. The underlying concept that distinguishes man from woman, i.e. sex or gender, may be equivalently specified by various other word 					pairs, such as king and queen or brother and sister. To state this observation mathematically, we might expect that the vector differences man - woman, king - 					queen, and brother - sister might all be roughly equal. This property and other interesting patterns can be observed in the above set of visualizations.
+
+	Word2vec is a group of related models that are used to produce word embeddings. These models are shallow,
+	two-layer neural networks that are trained to reconstruct linguistic contexts of words.
+	Word2vec takes as its input a large corpus of text and produces a vector space,
+	typically of several hundred dimensions, with each unique word in the corpus being assigned a
+	corresponding vector in the space. Word vectors are positioned in the vector space such that words
+	that share common contexts in the corpus are located in close proximity to one another in the space.
+
+
+Word Vector sets (https://nlp.stanford.edu/projects/glove/):
+	Wikipedia 2014 + Gigaword 5 (6B tokens, 400K vocab, uncased, 50d, 100d, 200d, & 300d vectors, 822 MB download): glove.6B.zip
+	Common Crawl (42B tokens, 1.9M vocab, uncased, 300d vectors, 1.75 GB download): glove.42B.300d.zip
+	Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download): glove.840B.300d.zip
+	Twitter (2B tweets, 27B tokens, 1.2M vocab, uncased, 25d, 50d, 100d, & 200d vectors, 1.42 GB download): glove.twitter.27B.zip
