@@ -1,0 +1,7 @@
+(Add this to the system analysis and requirements)
+
+Modules chosen are pandas, numpy, nltk, tensorflow, keras, sklearn, and other basic ones. These all can be installed
+using 'pip' installer or use the python conda environment to do the same. pandas and numpy will be used for handling
+data-sets and scientific computations. They will also make it easier to run the builtins for different tasks. nltk
+module will help us for the Text Rank algorithm. It has various methods for doing tasks like sentence_tokenization and
+many more.
