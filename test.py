@@ -1,4 +1,1 @@
-import gensim
-
-
-
+print(2*1398279123)
