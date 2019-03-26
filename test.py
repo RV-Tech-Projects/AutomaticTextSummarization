@@ -1,6 +1,5 @@
 from gensim.summarization import summarize, keywords
 
-
 text = "In late summer 1945, guests are gathered for the wedding reception of Don Vito Corleones " + \
        "daughter Connie (Talia Shire) and Carlo Rizzi (Gianni Russo). Vito (Marlon Brando)," + \
        "the head of the Corleone Mafia family, is known to friends and associates as Godfather. " + \
