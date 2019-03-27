@@ -18,7 +18,7 @@ def separate_sentences_from_text(_text_to_split):
     return _separated_sentences_list
 
 
-def split_words(_text_to_split):
+def separate_words_from_text(_text_to_split):
     """
     This function takes in a text as a string and then, separates
     words from it.
@@ -64,4 +64,4 @@ if __name__ == '__main__':
 
     # Test what the function returns
     print(separate_sentences_from_text(text))
-    print(split_words(text))
+    print(separate_words_from_text(text))
