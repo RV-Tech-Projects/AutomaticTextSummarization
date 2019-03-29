@@ -7,7 +7,7 @@ _stop_words = set()
 _ideal_number_of_words_in_a_sentence = 20
 
 
-def getter_keyword_frequency(_text):
+def getter_keyword_frequency(_text: str) -> dict:
     """
     This functions chooses the top 10 keywords from the words in _text by
     their frequency. If number of words, in the text is less than 10, then
@@ -31,7 +31,8 @@ def getter_keyword_frequency(_text):
 
     # We only import the english stop words
     global _stop_words
-    _stop_words += set(nltk_stopwords.words('english'))
+    # setA.update(setB) => add contents of B to A
+    _stop_words.update(set(nltk_stopwords.words('english')))
 
     # We than add our list of stop words to the builtin stop words
     # our list of stop words are stored in the text file that we import below
@@ -66,7 +67,7 @@ def getter_keyword_frequency(_text):
     return _keywords
 
 
-def summation_based_selection_score(_words, _keywords):
+def summation_based_selection_score(_words: list, _keywords: dict) -> float:
     """
     This function returns the score by first adding all the normalized keyword frequency of all
     keywords and then returns the normalized final score
@@ -79,9 +80,9 @@ def summation_based_selection_score(_words, _keywords):
     # initialize score with 0
     _score = 0
 
-    # return None if no words are left after removal of stop words
+    # return 0 if no words are left after removal of stop words
     if len(_words) == 0:
-        return None
+        return 0
 
     # iterate over all words in the list of words, one by one
     for _word in _words:
@@ -95,7 +96,7 @@ def summation_based_selection_score(_words, _keywords):
     return _score
 
 
-def density_based_selection_score(_words, _keywords):
+def density_based_selection_score(_words: list, _keywords: dict) -> float:
     """
     This function finds the density of the keyword scores
 
@@ -154,13 +155,13 @@ def density_based_selection_score(_words, _keywords):
                 _sum += (_current[1] * _previous[1]) / pow(_difference_in_position, 2)
 
     # number of keywords
-    _number_of_keywords = len(_keywords.keys)
+    _number_of_keywords = len(_keywords.keys())
 
     # return the density of the score by the following normalization
     return _sum / ((_number_of_keywords + 1) * (_number_of_keywords + 1))
 
 
-def scoring_the_title(_title_as_a_list_of_words, _sentence_as_a_list_of_words):
+def scoring_the_title(_title_as_a_list_of_words: list, _sentence_as_a_list_of_words: list) -> float:
     """
     This function assigns score to a title based on the appearance of every word,
     in title, in the sentence passed as argument
@@ -191,7 +192,8 @@ def scoring_the_title(_title_as_a_list_of_words, _sentence_as_a_list_of_words):
     return _score / len(_title_as_a_list_of_words)
 
 
-def probability_of_a_sentence_being_important_based_on_position(_position_in_text, _number_of_sentences):
+def probability_of_a_sentence_being_important_based_on_position(_position_in_text: int
+                                                                , _number_of_sentences: int) -> float:
     """
     Position of a sentence in the text affects its importance
 
@@ -233,7 +235,7 @@ def probability_of_a_sentence_being_important_based_on_position(_position_in_tex
     return 0
 
 
-def score_of_sentence_for_its_word_length(_sentence_as_a_list_of_words):
+def score_of_sentence_for_its_word_length(_sentence_as_a_list_of_words: list) -> float:
     """
     This function calculates the score of sentence's word's length
 
@@ -246,6 +248,67 @@ def score_of_sentence_for_its_word_length(_sentence_as_a_list_of_words):
 
     # return the normalized score
     return 1 - (_off_from_ideal / _ideal_number_of_words_in_a_sentence)
+
+
+def score_on_all_factors(_list_of_sentences: list, _title_as_a_list_of_words: list, _keywords: dict) -> Counter:
+    """
+    This function scores the sentences based of different factors like title, length, position in the text,
+    summation score, density score, etc.
+
+    :param _list_of_sentences: List of all the sentences
+    :param _title_as_a_list_of_words: List of all the words of the title
+    :param _keywords: Dictionary of top 10 keywords along with their normalized frequency score
+    :return: Final score that is calculated based on many factors
+    """
+
+    # this variable stores the total number of sentences
+    _number_of_sentences = len(_list_of_sentences)
+
+    # We create a Counter object to be used a a dictionary.
+    # We use Counter instead of dictionary because, Counter objects have a method attached to them
+    # named: most_common. This method can help us get the top N sentences without having to write
+    # a piece of code to do it for us.
+    _ranks = Counter()
+
+    # We then iterate over all the sentences to score them individually.
+    for _pos, _sentence in enumerate(_list_of_sentences):
+
+        # First convert sentence to a list of words.
+        _sentence_split_into_list_of_words = separate_words_from_text(_sentence)
+
+        # Scoring the sentence based on the title.
+        _title_score_for_a_sentence = scoring_the_title(_title_as_a_list_of_words,
+                                                        _sentence_split_into_list_of_words)
+
+        # Scoring the sentence based on the number of words it has.
+        _sentence_score_based_on_number_of_words = \
+            score_of_sentence_for_its_word_length(_sentence_split_into_list_of_words)
+
+        # Scoring the sentence based on where it is located in the text.
+        _sentence_score_based_on_its_position = \
+            probability_of_a_sentence_being_important_based_on_position(_pos + 1, _number_of_sentences)
+
+        # Adding all the normalized frequency of keywords in the sentence and returning normalized score.
+        _summation_based_selection_score = \
+            summation_based_selection_score(_sentence_split_into_list_of_words, _keywords)
+
+        # Scoring based on the density of the keywords.
+        _density_based_selection_score = \
+            density_based_selection_score(_sentence_split_into_list_of_words, _keywords)
+
+        # Net score of SBS and DBS features.
+        _net_selection_score = 10 * (_summation_based_selection_score + _density_based_selection_score) / 2
+
+        # weighted average of scores from four categories.
+        _final_score = (_title_score_for_a_sentence * 1.5 + _net_selection_score * 2.0 +
+                        _sentence_score_based_on_number_of_words * 1.0 +
+                        _sentence_score_based_on_its_position * 1.0) / 4.0
+
+        # Storing the score of the sentence in the Counter object.
+        _ranks[_sentence] = _final_score
+
+    # Returning the scores of all the objects in a Counter object.
+    return _ranks
 
 
 # [ FOR DEBUGGING ] Only run this code if this file is run independently
