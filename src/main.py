@@ -1,4 +1,3 @@
-# summarize functions definition in src/summarize
 from src.summarize import summarize_data_from_url, summarize
 
 
@@ -22,7 +21,8 @@ def log_summary_for_url(fetch_url):
 
     # else, Log the summary to the console
     else:
-        print(summary)
+        for _s in summary:
+            print(_s)
         return None
 
 
@@ -47,11 +47,12 @@ def log_summary(input_title, input_text):
 
     # else, Log the summary to the console
     else:
-        print(summary)
+        for _s in summary:
+            print(_s)
         return None
 
 
 if __name__ == '__main__':
 
-    url = "https://www.bbc.com/news/world-asia-india-47499917"
+    url = "https://www.bbc.com/news/world-asia-india-47721497"
     log_summary_for_url(url)
