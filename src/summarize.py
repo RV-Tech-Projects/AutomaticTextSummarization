@@ -1,10 +1,33 @@
 # function for getting the data from url
 from src.article_from_url import get_article_from_link
+from src.text_processing import separate_sentences_from_text,\
+    separate_words_from_text
+from src.ranking_functions import getter_keyword_frequency, score_on_all_factors
 
 
-# TODO: Yet to complete
 def summarize(_title, _text):
-    return "something, for now, to avoid warnings"
+    _summary = []
+    _list_of_sentences = separate_sentences_from_text(_text)
+    _keywords = getter_keyword_frequency(_text)
+    _title_split_into_list_of_words = separate_words_from_text(_title)
+
+    if len(_list_of_sentences) <= 5:
+        return _list_of_sentences
+
+    # Scoring sentences, and using the top 5
+    # most_common returns a list of tuples, where each tuple = (key, value), of most common keys
+    _final_ranks = score_on_all_factors(_list_of_sentences,
+                                        _title_split_into_list_of_words, _keywords).most_common(5)
+
+    # Iterate over all key value pairs of the top 5 ranks
+    for _sentence_and_its_rank in _final_ranks:
+
+        # append the key, which is the first element of the tuple, to the summary.
+        # Here, key is the sentence.
+        _summary.append(_sentence_and_its_rank[0])
+
+    # Return the list of top 5 sentences as the summary
+    return _summary
 
 
 def summarize_data_from_url(_local_url):
