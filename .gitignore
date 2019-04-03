@@ -1,0 +1,10 @@
+venv
+.idea
+.ipynb_checkpoints
+glove.6B
+.DS_Store
+datasets
+scratch.py
+src/__pycache__/
+src2/__pycache__/
+processed_data/
