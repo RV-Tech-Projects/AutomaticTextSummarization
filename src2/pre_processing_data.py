@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     # variable to hold the location of the dataset
     _location = '../datasets/amazon_fine_food_reviews/Reviews.csv'
-    with open(_location, 'rb') as _file:
+    with open(_location, 'r') as _file:
 
         # Read data as a dictionary. Column name is key, and its row-values is value.
         reviews = csv.DictReader(_file)
@@ -93,15 +93,6 @@ if __name__ == '__main__':
     # Import word vector conversions file
     import src2.word_vector_conversions as converter
 
-    # make the word_vector_conversions.py file use pre_processing_data.py 's
-    # globals
-    converter.find_call_from_which_file("pre_processing")
-
-    if converter.file_origin is None:
-        print("Couldn't modify the file call")
-        print("Exiting the code! Kuch bhi logic lagayega matlab")
-        exit(-1)
-
     # we iterate over all the texts
     for _text in texts:
 
@@ -118,7 +109,7 @@ if __name__ == '__main__':
                     _reviews_vocabulary.append(_word)
 
                     # and its vector value is appended to the reviews embeddings
-                    _reviews_embeddings.append(converter.word_to_vector(_word))
+                    _reviews_embeddings.append(converter.word_to_vector(_word, vocabulary, embeddings))
 
     # we iterate over all the summaries
     for _summary in summaries:
@@ -136,7 +127,7 @@ if __name__ == '__main__':
                     _reviews_vocabulary.append(_word)
 
                     # and its vector value is appended to the reviews embeddings
-                    _reviews_embeddings.append(converter.word_to_vector(_word))
+                    _reviews_embeddings.append(converter.word_to_vector(_word, vocabulary, embeddings))
 
     # We need 2 tokens: eos(end of sentence) and unk(unknown), in our
     # vocabulary to make some decisions or set some boundaries
@@ -148,7 +139,7 @@ if __name__ == '__main__':
         _reviews_vocabulary.append('eos')
 
         # and also append its vector value to the embeddings list
-        _reviews_embeddings.append(converter.word_to_vector('eos'))
+        _reviews_embeddings.append(converter.word_to_vector('eos', vocabulary, embeddings))
 
     # If eos is not in our vocabulary
     if 'unk' not in _reviews_vocabulary:
@@ -157,7 +148,7 @@ if __name__ == '__main__':
         _reviews_vocabulary.append('unk')
 
         # and also append its vector value to the embeddings list
-        _reviews_embeddings.append(converter.word_to_vector('unk'))
+        _reviews_embeddings.append(converter.word_to_vector('unk', vocabulary, embeddings))
 
     # We generally process in sequences of a fixed length. If a particular
     # sequence doesn't have the sufficient length, we add some padding(trash
@@ -190,10 +181,10 @@ if __name__ == '__main__':
         for word in _summary:
 
             # we append its vector form to the summary_vector
-            _summary_vector.append(converter.word_to_vector(word))
+            _summary_vector.append(converter.word_to_vector(word, vocabulary, embeddings))
 
         # we add the vector form of the eos character as well
-        _summary_vector.append(converter.word_to_vector('eos'))
+        _summary_vector.append(converter.word_to_vector('eos', vocabulary, embeddings))
 
         # then we convert is to np-array and change its data-type to float-32
         _summary_vector = np.asarray(_summary_vector).astype(np.float32)
@@ -216,7 +207,7 @@ if __name__ == '__main__':
         for word in _text_:
 
             # we append its vector form to the text_vector
-            _text_vector.append(converter.word_to_vector(word))
+            _text_vector.append(converter.word_to_vector(word, vocabulary, embeddings))
 
         # then we convert is to np-array and change its data-type to float-32
         _text_vector = np.asarray(_text_vector).astype(np.float32)
