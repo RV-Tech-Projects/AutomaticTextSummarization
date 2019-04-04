@@ -72,18 +72,20 @@ if __name__ == '__main__':
             # push the summary in the summaries list
             summaries.append(_words_in_summary)
 
-    # Reducing the data to execute the next steps faster
-    DATA_LIMIT = 50000
+    print("Loaded all reviews on texts and summaries list!")
 
-    # Some stats
-    print("Total data = " + str(len(texts)))
-    print("Limited to =", DATA_LIMIT)
-
-    # Remove extra texts
-    texts = texts[:DATA_LIMIT]
-
-    # Remove extra summaries
-    summaries = summaries[:DATA_LIMIT]
+    # # Reducing the data to execute the next steps faster
+    # DATA_LIMIT = 50000
+    #
+    # # Some stats
+    # print("Total data = " + str(len(texts)))
+    # print("Limited to =", DATA_LIMIT)
+    #
+    # # Remove extra texts
+    # texts = texts[:DATA_LIMIT]
+    #
+    # # Remove extra summaries
+    # summaries = summaries[:DATA_LIMIT]
 
     # These variables will hold the vocabulary words from the reviews and their
     # positions
@@ -111,6 +113,8 @@ if __name__ == '__main__':
                     # and its vector value is appended to the reviews embeddings
                     _reviews_embeddings.append(converter.word_to_vector(_word, vocabulary, embeddings))
 
+    print("Added all texts non-stop words to vocabulary")
+
     # we iterate over all the summaries
     for _summary in summaries:
 
@@ -128,6 +132,8 @@ if __name__ == '__main__':
 
                     # and its vector value is appended to the reviews embeddings
                     _reviews_embeddings.append(converter.word_to_vector(_word, vocabulary, embeddings))
+
+    print("Added all summaries non-stop words to vocabulary")
 
     # We need 2 tokens: eos(end of sentence) and unk(unknown), in our
     # vocabulary to make some decisions or set some boundaries
@@ -194,6 +200,8 @@ if __name__ == '__main__':
         # of list of vector forms of words for each summary.
         summaries_in_vector_form.append(_summary_vector)
 
+    print("Converted all summaries in vector form!")
+
     # converting all the words of the text in the vector form
     texts_in_vector_form = []
 
@@ -217,6 +225,8 @@ if __name__ == '__main__':
         # of list of vector forms of words for each text.
         texts_in_vector_form.append(_text_vector)
 
+    print("Converted all texts in vector form!")
+
     # Saving the processed data in some file to re-use it later
 
     with open('../processed_data/amazon_reviews/_reviews_vocabulary', 'wb') as fp:
@@ -227,3 +237,5 @@ if __name__ == '__main__':
         pickle.dump(summaries_in_vector_form, fp)
     with open('../processed_data/amazon_reviews/_texts_in_vector_form', 'wb') as fp:
         pickle.dump(texts_in_vector_form, fp)
+
+    print("Final stage complete!")
