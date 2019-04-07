@@ -1,4 +1,4 @@
-from src.text_processing import separate_words_from_text
+from TextRank.text_processing import separate_words_from_text
 from collections import Counter
 
 

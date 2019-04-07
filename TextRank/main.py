@@ -1,4 +1,4 @@
-from src.summarize import summarize_data_from_url, summarize
+from TextRank.summarize import summarize_data_from_url, summarize
 
 
 def log_summary_for_url(fetch_url):

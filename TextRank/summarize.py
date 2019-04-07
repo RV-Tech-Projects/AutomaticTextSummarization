@@ -1,8 +1,8 @@
 # function for getting the data from url
-from src.article_from_url import get_article_from_link
-from src.text_processing import separate_sentences_from_text,\
+from TextRank.article_from_url import get_article_from_link
+from TextRank.text_processing import separate_sentences_from_text,\
     separate_words_from_text
-from src.ranking_functions import getter_keyword_frequency, score_on_all_factors
+from TextRank.ranking_functions import getter_keyword_frequency, score_on_all_factors
 
 
 def summarize(_title, _text):
